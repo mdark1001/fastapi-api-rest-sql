@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from database.depends import get_db
 from users.models import User
-from users.schemas import UserLogin, UserBase, UserCreate, UserRegistered
+from users.schemas import UserLogin, UserBase, UserCreate, UserRegistered, ResetPassword
 from users.utils import encrypt, create_access_token, verify_password
 from users.utils import get_current_user
 from utils.response import not_found, bad_request, success_request
@@ -68,3 +68,21 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 )
 def verify_token(current_user: Any = Depends(get_current_user)):
     return success_request('This token is right')
+
+
+@router.put(
+    path='/reset-password',
+    response_model=UserRegistered,
+)
+def reset_password(password: ResetPassword, current_user: User = Depends(get_current_user),
+                   db: Session = Depends(get_db)):
+
+    if not verify_password(password.current_password, current_user.password):
+        raise bad_request('Password is wrong')
+    if password.current_password == password.new_password:
+        raise bad_request('Current password is equals to new password')
+    current_user.password = encrypt(password.new_password)
+    db.add(current_user)
+    db.commit()
+    db.refresh(current_user)
+    return success_request('Password has beem updated')

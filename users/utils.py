@@ -78,4 +78,4 @@ def get_current_user(token: str = Header(...), db: Session = Depends(get_db)):
     if not user:
         logger.error("User does not exits %s" % payload.get('sub'))
         raise bad_request('The token does not belong to any user')
-    return User
+    return user

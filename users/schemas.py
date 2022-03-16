@@ -63,3 +63,18 @@ class UserRegistered(UserBase):
 class Token(BaseModel):
     token: str
     user: UserBase
+
+
+class ResetPassword(BaseModel):
+    current_password: str = Field(
+        ...,
+        min_length=5,
+        title="User's password",
+        example="AwesomePassword",
+    )
+    new_password: str = Field(
+        ...,
+        min_length=5,
+        title="User's password",
+        example="NewAwesomePassword",
+    )
