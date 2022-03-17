@@ -76,7 +76,6 @@ def verify_token(current_user: Any = Depends(get_current_user)):
 )
 def reset_password(password: ResetPassword, current_user: User = Depends(get_current_user),
                    db: Session = Depends(get_db)):
-
     if not verify_password(password.current_password, current_user.password):
         raise bad_request('Password is wrong')
     if password.current_password == password.new_password:
@@ -86,3 +85,20 @@ def reset_password(password: ResetPassword, current_user: User = Depends(get_cur
     db.commit()
     db.refresh(current_user)
     return success_request('Password has beem updated')
+
+
+@router.get(
+    path='/user/{user_id}',
+)
+def get_user_id(user_id: int, current_user: Any = Depends(get_current_user)):
+    user = jsonable_encoder(User.read(user_id))
+    return UserBase(**user)
+
+
+@router.delete(path='/user/{user_id}')
+def delete_user(user_id: int, current_user: Any = Depends(get_current_user)):
+    try:
+        User.unlink(user_id)
+    except Exception as e:
+        return bad_request(str(e))
+    return success_request(message="User has been deleted ")

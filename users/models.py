@@ -6,10 +6,11 @@
 
 from sqlalchemy import String, Column, Integer, Boolean
 
+from database.depends import CRUD
 from database.engine import AppModel
 
 
-class User(AppModel):
+class User(AppModel, CRUD):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, index=True, unique=True)

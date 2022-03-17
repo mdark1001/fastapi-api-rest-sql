@@ -8,12 +8,14 @@ from fastapi import FastAPI
 
 from database.engine import engine, AppModel
 from users import router
+from credits import routers as credit_router
 from database import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME
 )
 app.include_router(router.router)
+app.include_router(credit_router.router)
 # recreate database
 # AppModel.metadata.drop_all(engine)
 AppModel.metadata.create_all(engine)
