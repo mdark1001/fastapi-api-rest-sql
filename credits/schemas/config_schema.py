@@ -19,3 +19,4 @@ class CalculatorConfigBase(BaseModel):
 
 class CalculatorConfigStore(CalculatorConfigBase):
     id: Optional[int] = Field(None)
+

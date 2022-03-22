@@ -3,8 +3,8 @@
 @date: 16/03/22
 @name: models
 """
-from sqlalchemy import Column, Integer, Float
 
+from sqlalchemy import Column, Integer, Float
 from database.depends import CRUD
 from database.engine import AppModel
 

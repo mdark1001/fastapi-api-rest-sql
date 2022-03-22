@@ -33,6 +33,17 @@ class CRUD:
         return cls.objects().query(cls).filter(cls.id == id).first()
 
     @classmethod
+    def update(cls, id: int, data: dict):
+        db = cls.objects()
+        _object = db.query(cls).filter(cls.id == id).first()
+        for name, value in data.items():
+            setattr(_object, name, value)
+        db.add(_object)
+        db.commit()
+        db.refresh(_object)
+        return _object
+
+    @classmethod
     def unlink(cls, id: int):
         if cls.read(id):
             db = cls.objects()

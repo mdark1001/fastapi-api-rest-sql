@@ -10,6 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from database.depends import get_db
+from database.settings import API_VERSION
 from users.models import User
 from users.schemas import UserLogin, UserBase, UserCreate, UserRegistered, ResetPassword
 from users.utils import encrypt, create_access_token, verify_password
@@ -17,7 +18,7 @@ from users.utils import get_current_user
 from utils.response import not_found, bad_request, success_request
 
 router = APIRouter(
-    prefix='/account',
+    prefix=f'{API_VERSION}account',
     tags=['account']
 )
 
